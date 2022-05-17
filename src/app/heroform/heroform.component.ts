@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Hero } from '../models/hero';
 @Component({
   selector: 'app-heroform',
@@ -9,10 +10,18 @@ export class HeroformComponent implements OnInit {
   powers=['Laser Eyes']
   model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
   submitted = false;
-  constructor() { }
+  heroForm:FormGroup;
+  constructor(
+    private fb:FormBuilder
+  ) { }
 
-  ngOnInit(){}
-  onSubmit() { this.submitted = true; }
+  ngOnInit(){
+    this.heroForm=this.fb.group({
+      name:['', Validators.required],
+      alterEgo:['', [Validators.required, Validators.minLength(3)]]
+    })
+  }
+  onSubmit() { console.log(this.heroForm.value) }
 
   newHero() {
     this.model = new Hero(42, '', '');
